@@ -1,12 +1,13 @@
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_rect.h>
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_video.h>
+#include <SDL2/SDL_keyboard.h>
 #include <stdio.h>
 
 const int SCREENWIDTH = 1920;
 const int SCREENHEIGHT = 1920;
 const char* TITLE = "TEST";
+const int SPEED = 11;
+
+void handle_movement(SDL_Rect* rect, const Uint8* keysPressed);
 
 int main() {
 
@@ -52,7 +53,9 @@ int main() {
         //drawing the rectangle
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
         SDL_RenderFillRect(renderer, &rect);
-
+        
+        //handling input
+        handle_movement(&rect, SDL_GetKeyboardState(NULL));
         SDL_RenderPresent(renderer);
     }
 
@@ -62,3 +65,9 @@ int main() {
     return 0;
 }
 
+void handle_movement(SDL_Rect* rect, const Uint8* keysPressed) {
+   if (keysPressed[SDL_SCANCODE_UP]) rect->y -= SPEED;
+   if (keysPressed[SDL_SCANCODE_DOWN]) rect->y += SPEED;
+   if (keysPressed[SDL_SCANCODE_RIGHT]) rect->x += SPEED;
+   if (keysPressed[SDL_SCANCODE_LEFT]) rect->x -= SPEED;
+} 
